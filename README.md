@@ -2,6 +2,8 @@
 
 Firebase image: https://github.com/googlearchive/firepano
 
+Name: Bracket [] dating (for now)
+
 Features:
 1- Homepage (essential)
 2- Login Page (essential)
