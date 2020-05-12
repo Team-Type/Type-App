@@ -23,3 +23,7 @@ Features:
 4- Chats (essentail)
 5- About Page
 6- Profile page/Profile edit page
+
+# Task:
+-Jot and Luke: Login page
+-Daryl and Omar: database setup
