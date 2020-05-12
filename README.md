@@ -19,3 +19,5 @@ Features:
   -Orientation
   -Location
 4- Chats (essentail)
+5- About Page
+6- Profile page/Profile edit page
