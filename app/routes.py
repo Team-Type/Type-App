@@ -1,9 +1,10 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app.forms import LoginForm
-from flask_wtf import FlaskForm
+from app.forms import RegisterForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
+from getpass import getpass
 import pyrebase 
 
 config = {
@@ -47,4 +48,19 @@ def login():
         print(user)
         return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        flash('Registration requested for user {}'.format(form.username.data))
+        user = auth.create_user_with_email_and_password(form.username.data, form.password.data)
+        user1 = auth.sign_in_with_email_and_password(form.username.data, form.password.data)
+        auth.get_account_info(user["idToken"])
+        print(user)
+        print(user1)
+        return redirect(url_for('index'))
+    return render_template('register.html', title='Register', form=form)
+
+
 
