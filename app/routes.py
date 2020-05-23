@@ -1,11 +1,14 @@
+import flask
+from flask import session
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app.forms import LoginForm
 from app.forms import RegisterForm
+from app.forms import ProfileBuildForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 from getpass import getpass
-import pyrebase 
+import pyrebase  
 
 config = {
   "apiKey": "AIzaSyAQiMgNWCj9oC68LNQk4UxbkykkxS3j1pk",
@@ -44,8 +47,8 @@ def login():
     if form.validate_on_submit():
         flash('Login requested for user {}, remember_me={}'.format(form.username.data, form.remember_me.data))
         user = auth.sign_in_with_email_and_password(form.username.data, form.password.data)
-        auth.get_account_info(user["idToken"])
-        print(user)
+        user1 = auth.get_account_info(user["idToken"])
+        session['user'] = user1
         return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
 
@@ -56,11 +59,22 @@ def register():
         flash('Registration requested for user {}'.format(form.username.data))
         user = auth.create_user_with_email_and_password(form.username.data, form.password.data)
         user1 = auth.sign_in_with_email_and_password(form.username.data, form.password.data)
-        auth.get_account_info(user["idToken"])
-        print(user)
-        print(user1)
+        user2 = auth.get_account_info(user["idToken"])
+        session['user'] = user2
         return redirect(url_for('index'))
     return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    form = ProfileBuildForm()
+    if form.validate_on_submit():
+        user = session.get('user')
+        print(user)
+        return redirect(url_for('index'))
+    return render_template('profile.html', title='Profile', form=form)
+
+
 
 
 
